@@ -1,16 +1,25 @@
-# This is a sample Python script.
+import datetime
+import time
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import requests
+from datetime import date, time
 
 
-# Press the green button in the gutter to run the script.
+"""
+отправляем GET запрос на страницу шоурума
+если в ответе не содержится строка о том, что все авто распроданы
+то надо будет создавать новых файл с содержимым ответа от сервера
+"""
+def main():
+    while True:
+        time.sleep(2)
+        r = requests.get("https://showroom.hyundai.ru/")
+        if "На данный момент все автомобили распроданы. Ожидайте поступления новых автомобилей в ближайшее время." \
+                not in r.text:
+            file_name = datetime.datetime.now()
+            with open("responses/" + file_name, "w") as f:
+                    f.write(r.text)
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print(datetime.datetime.now())
+    # main()
